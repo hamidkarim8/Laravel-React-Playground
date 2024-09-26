@@ -29,10 +29,21 @@ Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
-//test new tab
-Route::get('/tictactoe', function () {
+//tic tac toe
+Route::get('/tic-tac-toe', function () {
     return Inertia::render('TicTacToe');
 })->middleware(['auth', 'verified'])->name('tictactoe');
+
+//rock paper scissors
+Route::get('/rock-paper-scissors', function () {
+    return Inertia::render('RockPaperScissors');
+})->middleware(['auth', 'verified'])->name('rockpaperscissors');
+
+//connect four
+Route::get('/memory-game', function () {
+    return Inertia::render('MemoryGame');
+})->middleware(['auth', 'verified'])->name('memorygame');
+
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

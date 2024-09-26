@@ -3,10 +3,22 @@ import ApplicationLogo from '@/Components/ApplicationLogo';
 import Dropdown from '@/Components/Dropdown';
 import NavLink from '@/Components/NavLink';
 import ResponsiveNavLink from '@/Components/ResponsiveNavLink';
-import { Link } from '@inertiajs/react';
+import { Link, usePage } from '@inertiajs/react';
 
 export default function Authenticated({ user, header, children }) {
     const [showingNavigationDropdown, setShowingNavigationDropdown] = useState(false);
+
+    // Get the current URL from the Inertia page props
+    const { url } = usePage();
+    console.log("Current URL:", url); // Debugging line
+
+    // Define an array of navigation items with their respective routes
+    const navItems = [
+        { name: 'Dashboard', route: 'dashboard' },
+        { name: 'Tic Tac Toe', route: 'tictactoe' },
+        { name: 'Rock-Paper-Scissors', route: 'rockpaperscissors' },
+        { name: 'Memory Game', route: 'memorygame' },
+    ];
 
     return (
         <div className="min-h-screen bg-gray-100 dark:bg-gray-900">
@@ -21,12 +33,15 @@ export default function Authenticated({ user, header, children }) {
                             </div>
 
                             <div className="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                                <NavLink href={route('dashboard')} active={route().current('dashboard')}>
-                                    Dashboard
-                                </NavLink>
-                                <NavLink href={route('tictactoe')}>
-                                    Tic Tac Toe
-                                </NavLink>
+                                {navItems.map(item => (
+                                    <NavLink
+                                        key={item.route}
+                                        href={route(item.route)}
+                                        active={url === route(item.route)} // Exact match
+                                    >
+                                        {item.name}
+                                    </NavLink>
+                                ))}
                             </div>
                         </div>
 
@@ -40,7 +55,6 @@ export default function Authenticated({ user, header, children }) {
                                                 className="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 dark:text-gray-400 bg-white dark:bg-gray-800 hover:text-gray-700 dark:hover:text-gray-300 focus:outline-none transition ease-in-out duration-150"
                                             >
                                                 {user.name}
-
                                                 <svg
                                                     className="ms-2 -me-0.5 h-4 w-4"
                                                     xmlns="http://www.w3.org/2000/svg"
@@ -95,9 +109,15 @@ export default function Authenticated({ user, header, children }) {
 
                 <div className={(showingNavigationDropdown ? 'block' : 'hidden') + ' sm:hidden'}>
                     <div className="pt-2 pb-3 space-y-1">
-                        <ResponsiveNavLink href={route('dashboard')} active={route().current('dashboard')}>
-                            Dashboard
-                        </ResponsiveNavLink>
+                        {navItems.map(item => (
+                            <ResponsiveNavLink
+                                key={item.route}
+                                href={route(item.route)}
+                                active={url === route(item.route)} // Exact match
+                            >
+                                {item.name}
+                            </ResponsiveNavLink>
+                        ))}
                     </div>
 
                     <div className="pt-4 pb-1 border-t border-gray-200 dark:border-gray-600">
